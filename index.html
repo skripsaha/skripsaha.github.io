@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box</title>
+    <style>
+        /* Основные стили */
+        :root {
+            --bg-color: #f0f0f0;
+            --text-color: #1d1d1f;
+            --text-secondary: #6e6e77;
+            --text-tertiary: #a1a1a6;
+            --accent: #d4a373;
+            --accent-dark: #c08a5f;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+            --header-height: 70px;
+        }
+
+        /* Новая анимация загрузки */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 1.0s ease-out;
+        }
+
+        .loader-content {
+            display: flex;
+            align-items: center;
+            width: auto;
+            max-width: 90%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .loader-logo {
+            height: 90px;
+            width: auto;
+            animation: logoFadeIn 0.3s ease-out forwards;
+        }
+
+        .loader-text {
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+            transform: translateX(-100%);
+            opacity: 0;
+            animation: textSlideIn 0.8s 0.5s ease-out forwards;
+        }
+
+        .loader-slogan {
+            position: absolute;
+            bottom: 35%;
+            display: flex;
+            gap: 12px;
+            font-size: 1.4rem;
+            opacity: 0;
+            animation: fadeIn 0.5s 1s forwards;
+        }
+
+        .loader-slogan-word {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: sloganFadeIn 0.6s ease-out forwards;
+        }
+
+        .loader-slogan-word:nth-child(1) {
+			animation-delay: 1.0s;
+			font-size: 2.8rem;
+		}
+        .loader-slogan-word:nth-child(2) {
+			animation-delay: 1.5s;
+			font-size: 2.8rem;
+		}
+        .loader-slogan-word:nth-child(3) { 
+            animation-delay: 2.0s;
+            color: var(--text-color);
+            font-weight: 450;
+			font-size: 2.8rem;
+        }
+
+        @keyframes logoFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes textSlideIn {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(12px); opacity: 1; }
+        }
+
+        @keyframes sloganFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        /* Все остальные стили остаются БЕЗ ИЗМЕНЕНИЙ */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: var(--header-height);
+            opacity: 0;
+            animation: fadeInContent 0.8s 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInContent {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background-color: #f5f5f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            height: 50px;
+            width: auto;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            flex: 1;
+            animation: slideUp 0.6s ease-out;
+            margin-top: 1rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .core-message {
+            font-size: 1.4rem;
+            color: var(--text-color);
+            margin-bottom: 2.5rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: var(--text-tertiary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: #0069e0;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn:hover {
+            background-color: #0b7ce5;
+        }
+
+        .btn:hover::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 255, 255, 0) 70%
+            );
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-logo, .loader-logo {
+                height: 32px;
+            }
+            .header-title, .loader-text {
+                font-size: 1.4rem;
+            }
+            .loader-slogan {
+                font-size: 1.1rem;
+                bottom: 20%;
+            }
+            h1 { font-size: 2.2rem; }
+            .core-message { font-size: 1.2rem; }
+            .description { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Новая анимация загрузки -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <img src="images/box-logo.png" alt="Box OS Logo" class="loader-logo">
+            <div class="loader-text">Box</div>
+        </div>
+        <div class="loader-slogan">
+            <div class="loader-slogan-word">Click.</div>
+            <div class="loader-slogan-word">Done.</div>
+            <div class="loader-slogan-word">Genius.</div>
+        </div>
+    </div>
+
+    <!-- Фиксированный заголовок -->
+    <div class="fixed-header">
+        <div class="header-content">
+            <img src="images/box-logo.png" alt="Box OS Logo" class="header-logo">
+            <div class="header-title">Box</div>
+        </div>
+    </div>
+
+    <!-- Основное содержимое -->
+    <main>
+        <h1>Привет, ядро.</h1>
+        <div class="core-message">Создание великолепного ядра, чтобы порадовать вас в будущем!</div>
+        <p class="description">Box — операционная система для каждого. Мощное ядро для разработчиков и интуитивный интерфейс для повседневных задач. Если ты умеешь кликать — ты уже готов использовать Box.</p>
+        <a href="#" class="btn">Следить в соцсетях</a>
+    </main>
+
+    <footer>
+        © 2025 Box. Стадия разработки.
+    </footer>
+
+    <script>
+        // Обновленный скрипт для новой анимации
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 1500);
+                
+                // Добавляем пульсацию для слова Genius
+                setTimeout(() => {
+                    const geniusWord = document.querySelector('.loader-slogan-word:nth-child(3)');
+                    geniusWord.style.animation = 'sloganFadeIn 0.6s ease-out forwards, pulse 1s infinite';
+                }, 2500);
+            }, 3500); // Общее время анимации 3.5 секунды
+        });
+    </script>
+</body>
+</html>
